@@ -38,6 +38,18 @@ pipeline {
                 }
             }
         }
+        stage('Publish') {
+    steps {
+        script {
+            docker.withRegistry('https://registry.example.com', 'registry-credentials') {
+                def image = docker.build("registry.example.com/list:${env.BUILD_NUMBER}", "-f Dockerfile.deploy .")
+                image.push()
+                image.push('latest')
+            }
+        }
+    }
+}
+        
     }
 
 
