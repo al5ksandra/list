@@ -31,15 +31,15 @@ pipeline {
         }
 
         stage('Publish') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'registry-credentials') {
-                        def image = docker.build("aleksandra/list:${env.BUILD_NUMBER}", "-f Dockerfile.deploy .")
-                        image.push()
-                        image.push('latest')
-                    }
-                }
+    steps {
+        script {
+            docker.withRegistry('https://index.docker.io/v1/', 'registry-credentials') {
+                def image = docker.build("aleksandra/list:${env.BUILD_NUMBER}", "-f Dockerfile.deploy .")
+                image.push()
+                image.push('latest')
             }
         }
+    }
+}
     }
 }
