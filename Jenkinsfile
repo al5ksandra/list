@@ -38,16 +38,17 @@ pipeline {
                 }
             }
         }
-        stage('Publish') {
+       stage('Publish') {
     steps {
         script {
-            docker.withRegistry('https://registry.example.com', 'registry-credentials') {
-                def image = docker.build("registry.example.com/list:${env.BUILD_NUMBER}", "-f Dockerfile.deploy .")
+            docker.withRegistry('https://index.docker.io/v1/', 'registry-credentials') {
+                def image = docker.build("aleksandra/list:${env.BUILD_NUMBER}", "-f Dockerfile.deploy .")
                 image.push()
                 image.push('latest')
             }
         }
     }
+}
 }
         
     }
