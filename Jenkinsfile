@@ -16,6 +16,8 @@ pipeline {
             }
         }
 
+
+        
         stage('Test') {
             steps {
                 sh 'docker build -t list-test -f Dockerfile.test .'
