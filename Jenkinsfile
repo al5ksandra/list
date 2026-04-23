@@ -23,12 +23,19 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                sh 'docker build -t list-deploy -f Dockerfile.deploy .'
-                sh 'docker run --rm list-deploy'
-            }
-        }
+       stage('Deploy') {
+    steps {
+        sh 'docker build -t list-deploy -f Dockerfile.deploy .'
+       
+        sh 'docker create --name temp-container list-deploy'
+        sh 'docker cp temp-container:/artifact/libclibs_list.a ./libclibs_list.a'
+        sh 'docker rm temp-container'
+        
+        sh 'docker run --rm list-deploy'
+        
+        archiveArtifacts artifacts: 'libclibs_list.a', fingerprint: true
+    }
+}
 
         stage('Publish') {
     steps {
