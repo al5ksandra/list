@@ -1,0 +1,25 @@
+name: CI Pipeline C-Library
+
+on:
+  push:
+    branches: [ "ino_dev" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Pobranie kodu z repozytorium
+      uses: actions/checkout@v4
+
+    - name: Kompilacja projektu
+      run: make
+
+    - name: Uruchomienie testow jednostkowych
+      run: make test
+
+    - name: Publikacja gotowego artefaktu
+      uses: actions/upload-artifact@v4
+      with:
+        name: biblioteka-statyczna
+        path: libclibs_list.a
